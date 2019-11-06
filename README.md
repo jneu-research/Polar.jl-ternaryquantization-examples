@@ -5,7 +5,7 @@ In the case at hand, [Polar.jl](https://github.com/jneu-research/Polar.jl) was e
 
 For more information on this specific use case, check out our paper:
 
-* J. Neu, M. C. Coşkun, G. Liva, ''Ternary Quantized Polar Code Decoders: Analysis and Design'', 53rd Annual Asilomar Conference on Signals, Systems, and Computers, Nov. 2019, Pacific Grove, CA, USA. [arXiv:1910.01176](https://arxiv.org/abs/1910.01176)
+* J. Neu, M. C. Coşkun, G. Liva, ''Ternary Quantized Polar Code Decoders: Analysis and Design'', *53rd Annual Asilomar Conference on Signals, Systems, and Computers*, Nov. 2019, Pacific Grove, CA, USA. [arXiv:1910.01176](https://arxiv.org/abs/1910.01176)
 
 This repository is intended for Julia v1.0 and above.
 
@@ -18,7 +18,7 @@ Use at your own risk!
 
 ## References
 
-* J. Neu, M. C. Coşkun, G. Liva, ''Ternary Quantized Polar Code Decoders: Analysis and Design'', 53rd Annual Asilomar Conference on Signals, Systems, and Computers, Nov. 2019, Pacific Grove, CA, USA. [arXiv:1910.01176](https://arxiv.org/abs/1910.01176)
+* J. Neu, M. C. Coşkun, G. Liva, ''Ternary Quantized Polar Code Decoders: Analysis and Design'', *53rd Annual Asilomar Conference on Signals, Systems, and Computers*, Nov. 2019, Pacific Grove, CA, USA. [arXiv:1910.01176](https://arxiv.org/abs/1910.01176)
 * J. Neu, ''Polar.jl: Julia implementation of polar coding'', URL: https://jneu.net/Polar.jl
   ```
   @MISC{Polar_jl,
