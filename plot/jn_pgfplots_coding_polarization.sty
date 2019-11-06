@@ -1,0 +1,51 @@
+\ProvidesPackage{jn_pgfplots_coding_polarization}
+
+
+\usepackage{jn_pgfplots}
+
+
+% common plot styles
+
+\pgfplotsset{
+    mypolarizationplot/.style = {
+        % plots bold
+        % every axis plot/.append style={thick},
+        % size
+        width=\textwidth,
+        height=0.75\textwidth,
+        % limits
+        ymin=0.0, ymax=1.0,
+        % labels
+        xlabel={Synthetic Channel},
+        ylabel={Mutual Information},
+        % title
+        title style={font=\footnotesize,align=center},
+        % legend
+        legend cell align=left,
+        legend style={font=\footnotesize},
+        % legend columns=2,
+            % transpose legend,
+        legend style={at={(1.0,0.0)},xshift=-0.5em,yshift=0.5em,anchor=south east,fill=none},
+        % grid
+        grid=both,
+        ytick={0,0.2,...,1.0},
+        minor tick num=3,
+        minor x tick num=7,
+        major grid style={solid,draw=gray!50},
+        minor grid style={densely dotted,draw=gray!50},
+    },
+}
+
+
+% tikz styles
+
+\tikzset{mypolarizationplotfrozen/.style={only marks,mark=square*,mark options={solid,fill=black}}}
+\tikzset{mypolarizationplotunfrozen/.style={only marks,mark=square*,mark options={solid,fill=white}}}
+
+\tikzset{mypolarizationplotfrozensmall/.style={only marks,mark size=0.7pt,mark=*,mark options={myParula01Blue,fill=myParula01Blue}}}
+\tikzset{mypolarizationplotunfrozensmall/.style={only marks,mark size=0.7pt,mark=*,mark options={myParula07Red,fill=myParula07Red}}}
+
+\tikzset{mypolarizationplotbestfrozen/.style={myParula01Blue,dashed}}
+\tikzset{mypolarizationplotworstunfrozen/.style={myParula07Red,dashed}}
+
+\tikzset{mypolarizationmiloss/.style={fill=myParula07Red!30,draw opacity=0}}

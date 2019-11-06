@@ -1,0 +1,453 @@
+\ProvidesPackage{jn_notation}
+
+
+% This package took a lot of inspiration from the typesetting of Stefan Moser from ETH. In particular, I was inspired by his Information Theory manuscript and several of his papers on arXiv.
+
+
+% required packages
+
+% math basics
+\usepackage{amsmath}
+\usepackage{mathtools}
+
+% symbols
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{shortsym}
+
+% \usepackage{unicode-math}
+\usepackage{upgreek}   % required for upright Greek lowercase symbols
+
+% nice fractions
+\usepackage{nicefrac}
+
+% ieee formula typesetting (IEEEeqnarray)
+\makeatletter
+\@ifclassloaded{IEEEtran}{%
+    %
+}{%
+    \usepackage{IEEEtrantools}%
+}
+\makeatother
+\allowdisplaybreaks
+\renewcommand{\IEEEproofindentspace}{0em}
+\renewcommand{\IEEEQED}{\IEEEQEDopen}
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+% advanced "function definitions"
+\usepackage{xparse}
+
+% advanced spaces behind "merely abbreviation commands" that are omitted if followed by punctuation, see: https://tex.stackexchange.com/questions/31091/space-after-latex-commands https://tex.stackexchange.com/a/31092 https://tex.stackexchange.com/questions/31091/space-after-latex-commands#comment61316_31094
+\usepackage{xspace}
+
+% scaling of symbols
+\usepackage{scalerel}
+
+
+% fix \left and \right (remove spurious spaces, see https://tex.stackexchange.com/questions/2607/spacing-around-left-and-right)
+
+\let\originalleft\left
+\let\originalright\right
+\renewcommand{\left}{\mathopen{}\mathclose\bgroup\originalleft}
+\renewcommand{\right}{\aftergroup\egroup\originalright}
+
+
+% % math mode improvements: overload relations (see https://tex.stackexchange.com/a/311476)
+
+% \long\def\isnextchar#1#2#3{\begingroup\toks0={\endgroup#2}\toks1={\endgroup#3}%
+%    \let\tmp=#1\futurelet\next\isnextcharA
+% }
+% \def\isnextcharA{\the\toks\ifx\tmp\next0\else1\fi\space}
+
+% \def\skipnext#1#2{#1}
+% \def\trynext#1{\trynextA#1\relax\relax}
+% \def\trynextA#1#2\relax#3\relax#4#5{%
+%    \ifx\relax#2\relax \def\next{\isnextchar#1{\skipnext{#4}}{#5#3}}\else
+%       \def\next{\isnextchar#1{\skipnext{\trynextA#2\relax#3#1\relax#4{#5}}}{#5#3}}\fi
+%    \next
+% }
+% \def\mspecdefA#1#2#3 : #4{\ifx#2\undefined
+%    \def#2{\trynext{#3}#4{#1}}\else
+%    \toks0={\trynext{#3}#4}\toks1=\expandafter{#2}%
+%    \edef#2{\the\toks0{\the\toks1}}\fi
+% }
+% \def\mspecdef#1{%
+%    \expandafter\ifx\csname m:#1\endcsname\relax
+%       \expandafter\mathchardef\csname m:#1\endcsname=\mathcode`#1
+%    \fi
+%    \mathcode`#1="8000
+%    \begingroup \lccode`~=`#1
+%    \lowercase{\endgroup\expandafter\mspecdefA\csname m:#1\endcsname~}%
+% }
+
+% \mspecdef == : \equiv
+% \mspecdef =. : \doteq
+% \mspecdef := : \triangleq
+% \mspecdef << : \ll
+% \mspecdef >> : \gg
+% \mspecdef <> : \neq
+% \mspecdef <= : \leq
+% \mspecdef >= : \geq
+% \mspecdef <== : \Leftarrow
+% \mspecdef ==> : \Rightarrow
+% \mspecdef <=> : \Leftrightarrow
+% \mspecdef <==> : \iff
+% \mspecdef <-- : \leftarrow
+% \mspecdef --> : \rightarrow
+% \mspecdef <-> : \leftrightarrow
+% \mspecdef +- : \pm
+% \mspecdef -+ : \mp
+% \mspecdef ... : \dots
+% \mspecdef != : {\stackrel{!}{=}}
+
+
+% math mode improvements: overload relations
+
+\usepackage{semantic}
+\mathlig{==}{\equiv}
+\mathlig{=.}{\doteq}
+\mathlig{:=}{\triangleq}
+\mathlig{<<}{\ll}
+\mathlig{>>}{\gg}
+\mathlig{<>}{\neq}
+\mathlig{<=}{\leq}
+\mathlig{>=}{\geq}
+\mathlig{<==}{\Leftarrow}
+\mathlig{==>}{\Rightarrow}
+\mathlig{<=>}{\Leftrightarrow}
+\mathlig{<==>}{\iff}
+\mathlig{<--}{\leftarrow}
+\mathlig{-->}{\rightarrow}
+\mathlig{<->}{\leftrightarrow}
+\mathlig{+-}{\pm}
+\mathlig{-+}{\mp}
+\mathlig{...}{\dots}
+\mathlig{!=}{\stackrel{!}{=}}
+
+
+% math mode improvements: overload some characters (see https://tex.stackexchange.com/a/299805)
+
+\makeatletter
+\newcommand{\DeclareMathActive}[2]{%
+  % #1 is the character, #2 is the definition
+  \expandafter\edef\csname keep@#1@code\endcsname{\mathchar\the\mathcode`#1 }
+  \begingroup\lccode`~=`#1\relax
+  \lowercase{\endgroup\def~}{#2}%
+  \AtBeginDocument{\mathcode`#1="8000 }%
+}
+\makeatother
+
+\mathchardef\matholdsemicolon=\mathcode`\;
+\DeclareMathActive{|}{\given}
+\DeclareMathActive{;}{\matholdsemicolon}
+
+
+% define some text constants
+
+% TODO: we should get rid of xspace soon! https://tex.stackexchange.com/a/86620
+\xspaceaddexceptions{(}
+\newcommand{\eg}{\emph{e.g.}}   % followed by "," anyhow...
+\newcommand{\ie}{\emph{i.e.}}   % followed by "," anyhow...
+\newcommand{\cf}{cf.}   % trailing space, unless punctuation follows
+\newcommand{\wolog}{w.l.o.g.\ }   % trailing space, unless punctuation follows
+\newcommand{\RHS}{RHS\xspace}   % trailing space, unless punctuation follows
+\newcommand{\wrt}{w.r.t.\ }   % trailing space, unless punctuation follows
+\newcommand{\onehalf}{\nicefrac{1}{2}}
+\newcommand{\wprob}{w.p.\ }   % trailing space, unless punctuation follows
+\newcommand{\textiff}{iff\xspace}   % trailing space, unless punctuation follows
+
+
+% references to equations
+
+\renewcommand{\refeq}[1]{(\ref{#1})}
+
+
+% text-normal (to be used instead of \textrm and \mathrm, see: https://www.stefaanlippens.net/textnormal/)
+
+\newcommand{\tn}[1]{\textnormal{#1}}
+
+
+% some custom math operators
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+
+% absolute value and norm (see https://tex.stackexchange.com/a/43009)
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}
+
+% Swap the definition of \abs* and \norm*, so that \abs
+% and \norm resizes the size of the brackets, and the
+% starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+%
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+
+% basics
+
+\newcommand{\given}[0]{\ensuremath{\:\!\middle\vert\:\!}}
+
+\newcommand{\lrbsf}{\hspace{-0.07em}}   % left-right-box-spacing-fix
+\newcommand{\lrb}[1]{\lrbsf\left.#1\right.\lrbsf}
+
+
+% information/coding/communication theory quantities (constants usually, or functionals of distributions)
+
+\newcommand{\iI}[1]{\mathop{}\!\EI\left(#1\right)}   % mutual information
+\newcommand{\iH}[1]{\mathop{}\!\EH\left(#1\right)}   % entropy
+\newcommand{\ih}[1]{\mathop{}\!\Eh\left(#1\right)}   % differential entropy
+\newcommand{\iC}[1]{\mathop{}\!\EC\left(#1\right)}   % channel capacity
+\newcommand{\iV}[1]{\mathop{}\!\EV\left(#1\right)}   % channel dispersion
+\newcommand{\ii}[1]{\mathop{}\!\Ei\left(#1\right)}   % information content
+\newcommand{\iR}[1]{\mathop{}\!\ER\left(#1\right)}   % rates
+
+
+% communications
+
+\newcommand{\cEb}{\tn{E}_\tn{b}}
+\newcommand{\cEs}{\tn{E}_\tn{s}}
+\newcommand{\cNo}{\tn{N}_\tn{0}}
+\newcommand{\cEbNo}{\ensuremath{\nicefrac{\tn{E}_\tn{b}}{\tn{N}_\tn{0}}}}
+\newcommand{\cEsNo}{\ensuremath{\nicefrac{\tn{E}_\tn{s}}{\tn{N}_\tn{0}}}}
+\newcommand{\cPe}{\EP_\tn{e}}
+\newcommand{\cPeb}{\EP_\tn{e,b}}
+\newcommand{\cPeB}{\EP_\tn{e,B}}
+\newcommand{\cHatPe}{\hat{\EP}_\tn{e}}
+\newcommand{\cHatPeb}{\hat{\EP}_\tn{e,b}}
+\newcommand{\cHatPeB}{\hat{\EP}_\tn{e,B}}
+\newcommand{\cSNR}{\mathsf{SNR}}
+
+
+% quantization
+
+
+
+
+% channels
+
+\newcommand{\chCAWGN}[1]{\operatorname{CAWGN}\left(#1\right)}
+\newcommand{\chBEC}[1]{\operatorname{BEC}\left(#1\right)}
+\newcommand{\chBSC}[1]{\operatorname{BSC}\left(#1\right)}
+\newcommand{\chBiAWGN}[1]{\operatorname{BiAWGN}\left(#1\right)}
+\newcommand{\chBEEC}[2]{\operatorname{BEEC}\left(#1,#2\right)}
+\newcommand{\chQBiAWGN}[2]{\operatorname{Q}(#2)\!\operatorname{-BiAWGN}\left(#1\right)}
+\newcommand{\chOQBiAWGN}[2]{\operatorname{O-}\!\operatorname{Q}(#2)\!\operatorname{-BiAWGN}\left(#1\right)}
+
+
+% probability theory
+
+\newcommand{\event}[1]{\set{#1}}
+
+\NewDocumentCommand{\pDistribution}{s m o o}{
+  \IfBooleanTF{#1}{
+    \IfNoValueTF{#3}{
+      % {#2}
+      #2
+    }{
+      % {#2}\left(#3\right)
+      #2\left(#3\right)
+    }
+  }{
+    \IfNoValueTF{#4}{
+      % {#2}_{\lrb{#3}}
+      #2_{\lrb{#3}}
+    }{
+      % {#2}_{\lrb{#3}}\left(#4\right)
+      #2_{\lrb{#3}}\left(#4\right)
+    }
+  }
+}
+
+\NewDocumentCommand{\pp}{s o o}{
+  \IfBooleanTF{#1}{
+    \IfNoValueTF{#2}{
+      \pDistribution*{p}
+    }{
+      \pDistribution*{p}[#2]
+    }
+  }{
+    \IfNoValueTF{#3}{
+      \pDistribution{p}[#2]
+    }{
+      \pDistribution{p}[#2][#3]
+    }
+  }
+}
+
+\NewDocumentCommand{\pP}{s o o}{
+  \IfBooleanTF{#1}{
+    \IfNoValueTF{#2}{
+      \pDistribution*{P}
+    }{
+      \pDistribution*{P}[#2]
+    }
+  }{
+    \IfNoValueTF{#3}{
+      \pDistribution{P}[#2]
+    }{
+      \pDistribution{P}[#2][#3]
+    }
+  }
+}
+
+\NewDocumentCommand{\pPtilde}{s o o}{
+  \IfBooleanTF{#1}{
+    \IfNoValueTF{#2}{
+      \pDistribution*{\tilde{P}}
+    }{
+      \pDistribution*{\tilde{P}}[#2]
+    }
+  }{
+    \IfNoValueTF{#3}{
+      \pDistribution{\tilde{P}}[#2]
+    }{
+      \pDistribution{\tilde{P}}[#2][#3]
+    }
+  }
+}
+
+\NewDocumentCommand{\pq}{s o o}{
+  \IfBooleanTF{#1}{
+    \IfNoValueTF{#2}{
+      \pDistribution*{q}
+    }{
+      \pDistribution*{q}[#2]
+    }
+  }{
+    \IfNoValueTF{#3}{
+      \pDistribution{q}[#2]
+    }{
+      \pDistribution{q}[#2][#3]
+    }
+  }
+}
+
+\NewDocumentCommand{\pQ}{s o o}{
+  \IfBooleanTF{#1}{
+    \IfNoValueTF{#2}{
+      \pDistribution*{Q}
+    }{
+      \pDistribution*{Q}[#2]
+    }
+  }{
+    \IfNoValueTF{#3}{
+      \pDistribution{Q}[#2]
+    }{
+      \pDistribution{Q}[#2][#3]
+    }
+  }
+}
+
+\NewDocumentCommand{\pE}{o m}{
+  \IfNoValueTF{#1}{
+    \EE\left[#2\right]
+  }{
+    \EE_{\lrb{#1}}\lrbsf\left[#2\right]
+  }
+}
+
+\NewDocumentCommand{\pPr}{m}{
+  \EP\Er\left[#1\right]
+}
+
+\NewDocumentCommand{\pVar}{m}{
+  \EV\Ea\Er\left[#1\right]
+}
+
+\NewDocumentCommand{\pCov}{o m}{
+  \IfNoValueTF{#1}{
+    \EC\Eo\Ev\left[#2\right]
+  }{
+    \EC\Eo\Ev_{\lrb{#1}}\lrbsf\left[#2\right]
+  }
+}
+
+\newcommand{\Qfunc}[1]{Q\left(#1\right)}
+\newcommand{\Qfuncinv}[1]{Q^{-1}\left(#1\right)}
+
+% \DeclareMathOperator{\support}{support}
+\newcommand{\support}[1]{\operatorname{supp}\left(#1\right)}
+
+
+% integration
+
+\newcommand{\dd}{\,\mathrm{d}\hspace{0.07em}}
+
+
+% sets
+
+\newcommand{\cardinality}[1]{\left\vert#1\right\vert}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\renewcommand{\complement}{{\mathsf{c}}}
+
+
+% belief propagation like operations: check and variable nodes
+
+\NewDocumentCommand{\bpCN}{}{
+  \mathbin{\scaleobj{0.8}{\boxplus}}
+}
+\NewDocumentCommand{\bpVN}{o}{
+  \IfNoValueTF{#1}{
+    \mathbin{\scaleobj{1.2}{\bullet}}
+  }{
+    \mathbin{{\scaleobj{1.2}{\bullet}}_{#1}}
+  }
+}
+\newcommand{\sclPM}{\tn{PM}}
+\newcommand{\sclpm}{\tn{\textsc{Pm}}}
+
+
+% mathematical sets of number-like objects
+
+\newcommand{\Integers}{\mathbb Z}
+\newcommand{\Reals}{\mathbb R}
+\newcommand{\Rationals}{\mathbb Q}
+\newcommand{\Field}{\mathbb F}
+\newcommand{\Complex}{\mathbb C}
+\newcommand{\Naturals}{\mathbb N}
+
+
+% integer number intervals
+
+\newcommand{\intfromto}[2]{\left[#1{:}#2\right]}
+
+
+% probability distributions
+
+% \newcommand{\Gaussian}[2]{\CN\left(#1, #2\right)}
+\newcommand{\GaussianR}[2]{\CN_\Reals\left(#1, #2\right)}
+\newcommand{\GaussianC}[2]{\CN_\Complex\left(#1, #2\right)}
+\newcommand{\GaussianCfull}[3]{\CN_\Complex\left(#1, #2, #3\right)}
+\newcommand{\Bernoulli}[1]{\operatorname{Bern}\left(#1\right)}
+
+
+% rather exotic constants
+
+\newcommand{\tildeinfty}{{\overset{\sim}{\infty}}}
+
+
+% complexity and asymptotics
+
+% \newcommand{\cBigO}[1]{\CO\left(#1\right)}   % asymptotically constant-factor upper-bounded
+% \newcommand{\cBigTheta}[1]{\CO\left(#1\right)}   % asymptotically constant-factor upper-and-lower-bounded
+
+
+% sign/min/max
+
+\newcommand{\sign}[1]{\operatorname{sign}\left(#1\right)}
+\newcommand{\jnMin}[1]{\min\left\{#1\right\}}
+\newcommand{\jnMax}[1]{\max\left\{#1\right\}}
+
+
+% linear algebra
+
+\newcommand{\laH}[0]{\mathsf{H}}
+\newcommand{\laT}[0]{\mathsf{T}}

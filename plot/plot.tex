@@ -1,0 +1,120 @@
+\documentclass[%
+float=false,%
+preview=true,%
+class=IEEEtran,%
+fontsize=20pt,%
+]{standalone}
+
+
+% load my defaults
+
+\usepackage{jn_preamble_pdflatex}
+\usepackage{jn_notation}
+\usepackage{jn_pgfplots}
+\usepackage{jn_pgfplots_coding_errorrates}
+\usepackage{jn_pgfplots_coding_polarization}
+\usepackage{jn_colors_parula}
+
+
+\begin{document}
+\begin{figure}
+    \begin{subfigure}[t]{\linewidth}
+        \centering
+        \begin{tikzpicture}[]
+            \begin{axis}[myferplot,
+                xmode=normal, ymode=log,
+                title={Density evolution code design, $R=\nicefrac{1}{2}$, $n=256$, $L=32$},
+                xlabel={$\cEbNo$ [dB]},
+                ylabel={Frame Error Rate},
+                xmin=2.0, xmax=5.5,
+                legend columns=2,
+                height=0.65\linewidth,
+                x label style={at={(axis description cs:0.0,0.0)},anchor=south west,yshift=0em,xshift=1em},
+                y label style={at={(axis description cs:0.0,0.0)},anchor=north west,yshift=0em,xshift=0em},
+                title style={yshift=-0.5em},
+            ]
+
+                \def\DATAPREFIX{..}
+
+                \addplotpmfer[myparula12]{\DATAPREFIX/main-01-q3biawgn-q3llrs-C_own_Q3LBiAWGN_Q3LLLR_EbN045_001_31-L32.dat}{$\CL_3$-SCL}{leg:robustness-1stlayerunquantizedthenq3-performance-pmfer-01-q3-scl-32};
+
+                \addplotlistfer[myparula62]{\DATAPREFIX/main-01-q3biawgn-q3llrs-C_own_Q3LBiAWGN_Q3LLLR_EbN045_001_31-L32.dat}{$\CL_3$-SCL}{leg:robustness-1stlayerunquantizedthenq3-performance-listfer-01-q3-scl-32};
+
+                \addplotmlinlistfer[myparula43]{\DATAPREFIX/main-03-q3biawgn-q3llrs-C_own_Q3LBiAWGN_Q3LLLR_EbN045_001_31-L32.dat}{$\CL_3$-SCL + in-list ML}{leg:robustness-1stlayerunquantizedthenq3-performance-pmfer-01-q3-sclml-32};
+                \addplotmlinlistfer[myparula44]{\DATAPREFIX/main-03-q3biawgn-epmuq3llr01s-C_own_Q3LBiAWGN_Q3LLLR_EbN045_001_31-L32.dat}{$\CL_3$-SCL + in-list ML + EPMU}{leg:robustness-1stlayerunquantizedthenq3-performance-pmfer-01-q3epmu-sclml-32};
+
+                \addplotpmfer[myparula22]{\DATAPREFIX/main-01-q3biawgn-unqllrs-C_own_Q3LBiAWGN_Q3LLLR_EbN045_001_31-L32.dat}{$\CL_\infty$-SCL}{leg:robustness-1stlayerunquantizedthenq3-performance-pmfer-01-unq-scl-32};
+                \addplotmllbferX[myparula21,thin]{\DATAPREFIX/main-01-q3biawgn-unqllrs-C_own_Q3LBiAWGN_Q3LLLR_EbN045_001_31-L32.dat}{$\CL_\infty$-SCL (ML-LB)}{leg:robustness-1stlayerunquantizedthenq3-performance-pmfer-01-unq-scl-32-mllb};
+
+
+                % suppress legend
+                \legend{};
+
+            \end{axis}
+        \end{tikzpicture}
+        \caption{FER vs. $\cEbNo$ for variants of SCL decoding over the 3Q-BiAWGN channel, demonstrating gains for in-list ML and EPMU.}
+    \end{subfigure}
+    \smallskip\\
+    \begin{subfigure}[t]{\linewidth}
+        \centering
+        \begin{tikzpicture}[]
+            \begin{axis}[myferplot,
+                xmode=normal, ymode=log,
+                title={Reed-Muller code, $R=\nicefrac{37}{256}\approx0.145$, $n=256$, $L=128$},
+                xlabel={$\cEbNo$ [dB]},
+                ylabel={Frame Error Rate},
+                xmin=1.0, xmax=6.0,
+                legend columns=2,
+                xtick={1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,5.0,5.5,6.0},
+                height=0.65\linewidth,
+                x label style={at={(axis description cs:0.0,0.0)},anchor=south west,yshift=0em,xshift=1em},
+                y label style={at={(axis description cs:0.0,0.0)},anchor=north west,yshift=0em,xshift=0em},
+                title style={yshift=-0.5em}
+            ]
+
+                \def\DATAPREFIX{..}
+
+
+                \addplotpmfer[myparula12]{\DATAPREFIX/main-09-q3biawgn-q3llrs-C_rm_37_256-L128.dat}{$\CL_3$-SCL}{leg:robustness-lowrates-pmfer-01-q3-scl-128};
+
+                \addplotmlinlistfer[myparula43]{\DATAPREFIX/main-10-q3biawgn-q3llrs-C_rm_37_256-L128.dat}{$\CL_3$-SCL + in-list ML}{leg:robustness-lowrates-pmfer-01-q3-sclml-128};
+
+                \addplotmlinlistfer[myparula44]{\DATAPREFIX/main-10-q3biawgn-q3llrs-epmu-C_rm_37_256-L128.dat}{$\CL_3$-SCL + in-list ML + EPMU}{leg:robustness-lowrates-pmfer-01-q3-epmu-sclml-128};
+
+                \addplotpmfer[myparula22]{\DATAPREFIX/main-09-q3biawgn-unqllrs-C_rm_37_256-L128.dat}{$\CL_\infty$-SCL}{leg:robustness-lowrates-pmfer-01-unq-scl-128};
+                \addplotmllbferX[myparula21,thin]{\DATAPREFIX/main-09-q3biawgn-unqllrs-C_rm_37_256-L128.dat}{$\CL_\infty$-SCL (ML-LB)}{leg:robustness-lowrates-pmfer-01-unq-scl-128-mllb};
+
+                \addplotpmfer[myparula32]{\DATAPREFIX/main-09-biawgn-unqllrs-C_rm_37_256-L128.dat}{BiAWGN, $\CL_\infty$-SCL}{leg:robustness-lowrates-pmfer-01-unqunq-scl-128};
+                \addplotmllbferX[myparula31,thin]{\DATAPREFIX/main-09-biawgn-unqllrs-C_rm_37_256-L128.dat}{BiAWGN, $\CL_\infty$-SCL (ML-LB)}{leg:robustness-lowrates-pmfer-01-unqunq-scl-128-mllb};
+
+
+                % suppress legend
+                \legend{};
+
+            \end{axis}
+        \end{tikzpicture}
+        \caption{FER vs. $\cEbNo$ for variants of SCL decoding over the 3Q-BiAWGN channel, underlining the utility of EPMU at low code rates.}
+    \end{subfigure}
+    \medskip\\
+    \begin{subfigure}[t]{\linewidth}
+        \centering
+        \footnotesize
+        \tabcolsep0.25em
+        \begin{tabular}{llll}
+            % \toprule
+                & \textsc{Channel} & \textsc{Decoder} & \textsc{Metric}     \\[0.2em]
+            % \midrule
+                \ref{leg:robustness-lowrates-pmfer-01-q3-scl-128} & 3Q-BiAWGN & $\CL_3$-SCL & PM-FER \\
+                \ref{leg:robustness-1stlayerunquantizedthenq3-performance-listfer-01-q3-scl-32} & 3Q-BiAWGN & $\CL_3$-SCL & List-FER \\
+                \ref{leg:robustness-lowrates-pmfer-01-q3-sclml-128} & 3Q-BiAWGN & $\CL_3$-SCL + in-list ML & LML-FER \\
+                \ref{leg:robustness-lowrates-pmfer-01-q3-epmu-sclml-128} & 3Q-BiAWGN & $\CL_3$-SCL + in-list ML + EPMU & LML-FER \\
+                \ref{leg:robustness-lowrates-pmfer-01-unq-scl-128} & 3Q-BiAWGN & $\CL_\infty$-SCL & PM-FER \\
+                \ref{leg:robustness-lowrates-pmfer-01-unq-scl-128-mllb} & 3Q-BiAWGN & $\CL_\infty$-SCL & ML-LB \\
+                \ref{leg:robustness-lowrates-pmfer-01-unqunq-scl-128} & BiAWGN & $\CL_\infty$-SCL & PM-FER \\
+                \ref{leg:robustness-lowrates-pmfer-01-unqunq-scl-128-mllb} & BiAWGN & $\CL_\infty$-SCL & ML-LB \\
+            % \bottomrule
+        \end{tabular}
+    \end{subfigure}
+    \caption{FER vs. $\cEbNo$, (a) $R=\onehalf$ Polar code, and (b) $R=\nicefrac{37}{256}$ Reed-Muller code, demonstrating the gains due to the proposed techniques.}
+\end{figure}
+\end{document}

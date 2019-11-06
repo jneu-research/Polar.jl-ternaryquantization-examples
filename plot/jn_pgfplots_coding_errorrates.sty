@@ -1,0 +1,142 @@
+\ProvidesPackage{jn_pgfplots_coding_errorrates}
+
+
+\usepackage{jn_pgfplots}
+
+
+% common plot styles
+
+\pgfplotsset{
+    myferplot/.style = {
+        % plots bold
+        every axis plot/.append style={thick},
+        % size
+        width=\linewidth,
+        height=0.75\linewidth,
+        % limits
+        ymin=1e-4, ymax=1e-1,
+        % title
+        title style={font=\footnotesize,align=center},
+        % legend
+        legend cell align=left,
+        legend style={font=\footnotesize},
+        legend columns=3,
+        %   transpose legend,
+        legend style={at={(0.5,-0.15)},anchor=north,draw=none,/tikz/every even column/.append style={column sep=1em},cells={align=left}},
+        % grid
+        grid=both,
+        minor tick num=4,
+        major grid style={solid,draw=gray!50},
+        minor grid style={densely dotted,draw=gray!50},
+        % axis labelling
+        label style={font=\footnotesize},
+        tick label style={font=\footnotesize},
+    },
+}
+
+
+% plot shortcuts
+
+% plot error band (see: https://tex.stackexchange.com/a/180324)
+\newcommand{\addploterrorband}[5][]{   % style, filename, x column, y column, error column
+    % \addplot [name path=errorbandupper,draw=none,no markers,forget plot] table [x={#3},y expr=\thisrow{#4}+\thisrow{#5}] {#2};
+    % \addplot [name path=errorbandlower,draw=none,no markers,forget plot] table [x={#3},y expr=\thisrow{#4}-\thisrow{#5}] {#2};
+    % \addplot [forget plot,fill,opacity=0.3,#1] fill between[on layer={},of=errorbandupper and errorbandlower];
+}
+
+\newcommand{\addplotcustom}[7][]{   % style, filename, x column, y column, error column, legend, label
+    \addploterrorband[#1]{#2}{#3}{#4}{#5};
+    \addplot [#1] table [x=#3,y=#4] {#2};
+    \label{#7}
+    \addlegendentry{#6};
+}
+
+\newcommand{\addplotcustomX}[7][]{   % style, filename, x column, y column, legend, label
+    \addplot [#1] table [x=#3,y=#4] {#2};
+    \label{#6}
+    \addlegendentry{#5};
+}
+
+\newcommand{\addplotpmferRAW}[2][]{   % style, filename
+    \addploterrorband[#1]{#2}{EbN0dB}{PMError_rate}{PMError_ci_wilson};
+    \addplot [#1] table [x=EbN0dB,y=PMError_rate] {#2};
+}
+
+\newcommand{\addplotpmferRAWX}[2][]{   % style, filename
+    \addplot [#1] table [x=EbN0dB,y=PMError_rate] {#2};
+}
+
+\newcommand{\addplotpmfer}[4][]{   % style, filename, legend, label
+    \addplotpmferRAW[#1]{#2};
+    \label{#4}
+    \addlegendentry{#3};
+}
+
+\newcommand{\addplotpmferX}[4][]{   % style, filename, legend, label
+    \addplotpmferRAWX[#1]{#2};
+    \label{#4}
+    \addlegendentry{#3};
+}
+
+\newcommand{\addplotlistferRAW}[2][]{   % style, filename
+    \addploterrorband[#1]{#2}{EbN0dB}{ListError_rate}{ListError_ci_wilson};
+    \addplot [#1] table [x=EbN0dB,y=ListError_rate] {#2};
+}
+
+\newcommand{\addplotlistferRAWX}[2][]{   % style, filename
+    \addplot [#1] table [x=EbN0dB,y=ListError_rate] {#2};
+}
+
+\newcommand{\addplotlistfer}[4][]{   % style, filename, legend, label
+    \addplotlistferRAW[#1]{#2};
+    \label{#4}
+    \addlegendentry{#3};
+}
+
+\newcommand{\addplotlistferX}[4][]{   % style, filename, legend, label
+    \addplotlistferRAWX[#1]{#2};
+    \label{#4}
+    \addlegendentry{#3};
+}
+
+\newcommand{\addplotmlinlistferRAW}[2][]{   % style, filename
+    \addploterrorband[#1]{#2}{EbN0dB}{MLInListError_rate}{MLInListError_ci_wilson};
+    \addplot [#1] table [x=EbN0dB,y=MLInListError_rate] {#2};
+}
+
+\newcommand{\addplotmlinlistferRAWX}[2][]{   % style, filename
+    \addplot [#1] table [x=EbN0dB,y=MLInListError_rate] {#2};
+}
+
+\newcommand{\addplotmlinlistfer}[4][]{   % style, filename, legend, label
+    \addplotmlinlistferRAW[#1]{#2};
+    \label{#4}
+    \addlegendentry{#3};
+}
+
+\newcommand{\addplotmlinlistferX}[4][]{   % style, filename, legend, label
+    \addplotmlinlistferRAWX[#1]{#2};
+    \label{#4}
+    \addlegendentry{#3};
+}
+
+% \newcommand{\addplotmllbferRAW}[2][]{   % style, filename
+%     \addploterrorband[#1]{#2}{EbN0dB}{MLError_rate}{MLError_ci_wilson};
+%     \addplot [#1] table [x=EbN0dB,y=MLError_rate] {#2};
+% }
+
+\newcommand{\addplotmllbferRAWX}[2][]{   % style, filename
+    \addplot [#1] table [x=EbN0dB,y=MLError_rate] {#2};
+}
+
+% \newcommand{\addplotmllbfer}[4][]{   % style, filename, legend, label
+%     \addplotmllbferRAW[#1]{#2};
+%     \label{#4}
+%     \addlegendentry{#3};
+% }
+
+\newcommand{\addplotmllbferX}[4][]{   % style, filename, legend, label
+    \addplotmllbferRAWX[#1]{#2};
+    \label{#4}
+    \addlegendentry{#3};
+}

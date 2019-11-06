@@ -1,0 +1,98 @@
+\ProvidesPackage{jn_preamble}
+
+
+% hyphenation fixes
+
+\hyphenation{be-reits}
+\hyphenation{pre-print}
+\hyphenation{ca-pac-ity}
+\hyphenation{Bi-AWGN}
+
+
+% enable proper handling of unicode symbols
+
+% \usepackage{lmodern}   % Latin Modern extends/updates Computer Modern, it adds special characters
+% \usepackage{newunicodechar}   % defining these new unicode characters seems not necessary in LuaLaTeX ???
+% \newunicodechar{ı}{\i{}}
+% \newunicodechar{ş}{\c{s}}
+
+
+% URLs and hyperlinks
+\usepackage{hyperref}   % as of 2018-08-26, there seems to be no proper way to allow for hyphenation in urls or arxiv links (see definitions below), such that hyphenation needs to be done manually with \- there!
+
+% advanced "function definitions"
+\usepackage{xparse}
+
+% advanced "if-then-else"
+\usepackage{ifthen}
+
+% scaling of symbols
+\usepackage{scalerel}
+
+% for IEEEeqnarray
+\makeatletter
+\@ifclassloaded{IEEEtran}{%
+    %
+}{%
+    \usepackage{IEEEtrantools}%
+}
+\makeatother
+
+
+% nice units
+\usepackage{siunitx}
+
+% nice tables
+\usepackage{booktabs}
+
+% enumerations
+\usepackage[inline]{enumitem}
+
+% subcaption (subfigure and subtable)
+\makeatletter
+\let\MYcaption\@makecaption
+\makeatother
+
+\usepackage[labelformat=simple,font=footnotesize]{subcaption}
+
+\makeatletter
+\let\@makecaption\MYcaption
+\makeatother
+\renewcommand\thesubfigure{(\alph{subfigure})}
+\renewcommand\thesubtable{(\alph{subtable})}
+% \usepackage{subcaption}
+% \captionsetup[subfigure]{labelformat=parens}
+% \captionsetup[subtable]{labelformat=parens}
+% \captionsetup{refformat=parens,subrefformat=parens}
+% \usepackage[labelformat=parens]{subcaption}
+% \renewcommand\thesubfigure{(\alph{subfigure})}
+
+% compressed refs
+% \usepackage{cleveref}
+
+% block quotes, using "displayquote" environment
+\usepackage{csquotes}
+
+
+% % make sure we can upload this PDF to arxiv
+
+% \hypersetup{
+% pdfcreator = {},
+% pdfproducer = {}
+% }
+% % \pdfvariable suppressoptionalinfo \numexpr 1+2+4+8+16+32+64+128+256+512 \relax
+
+
+% fix of urls
+
+\DeclareRobustCommand{\urlttfamily}{\ttfamily\hyphenchar\font=`\ }
+
+\newcommand{\myurl}[1]{\href{#1}{{\urlttfamily #1}}}
+
+
+% arxiv links
+
+% \DeclareRobustCommand{\arxivttfamily}{\ttfamily\hyphenchar\font=`\ }
+\DeclareRobustCommand{\arxivttfamily}{\hyphenchar\font=`\ }
+
+\newcommand{\arxiv}[2]{\href{https://arxiv.org/abs/#1}{{\arxivttfamily arXiv:\allowbreak{}#1 [#2]}}}
